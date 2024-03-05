@@ -5,6 +5,8 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <fstream>
+#include <sstream>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -18,3 +20,8 @@ using std::numeric_limits;
 using std::vector;
 using std::swap;
 using std::sort;
+using std::getline;
+using std::ifstream;
+using std::ofstream;
+using std::stringstream;
+using std::cerr;
