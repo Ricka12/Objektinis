@@ -1,20 +1,22 @@
 #include "Mylib.h"
 struct studentas {
 	string vardas = "", pavarde = "";
-	int* paz = nullptr;
+	vector<int> paz;
 	int egz = 0;
 };
 void pildymas(studentas& temp);
-void print(studentas& temp);
-double vid(studentas& temp);
-double mid(studentas& temp);
+void print( studentas& temp);
+double vid( studentas& temp);
+double mid( studentas& temp);
+
 int paz_sk;
 int atsitiktinai;
-int main(){
-	studentas* grupe;
-	int n = 1;
-	int pildPab = 0;
 
+int main() {
+	char uzkl;
+	vector<studentas> grupe;
+	int n = 1;
+	studentas laikinas;
 	do {
 		cout << "Kiek pazymiu turi studentai?():  ";
 		cin >> paz_sk;
@@ -26,38 +28,29 @@ int main(){
 
 	cout << "Ar norite kad pazymiai butu generuojami atsitiktinai(1 jei taip, 0 jei ne):  ";
 	cin >> atsitiktinai;
-
-	grupe = new studentas[n];
-	do{
-	pildymas(grupe[n - 1]);
-	cout << "Ar norite kad butu pridedami studentai(1 taip, 0 ne): ";
-	cin >> pildPab;
-	if(pildPab == 1)
-	{
-	studentas* temp = new studentas[n];
-	copy(grupe, grupe + n, temp);
-	delete[] grupe;
-	grupe = new studentas[n + 1];
-	copy(temp, temp + n, grupe);
-	n++;
-	}
-	} while (pildPab == 1);
+	do {
+		cout << "Iveskite studento duomenys: \n";
+		pildymas(laikinas);
+		grupe.push_back(laikinas);
+		cout << "Pabaigus spauskite n, kitaip nuspasukit koki kita klavisa ir iveskite studento duomenis: ";
+		cin >> uzkl;
+	} while (uzkl != 'n' && uzkl !='N');
 	cout << setw(15) << "Vardas" << setw(20) << "Pavarde" << setw(20) << "Galutinis(Vid.)" << " /" << " Galutinis(Med)" << endl;
-	for (int i = 0; i < n; i++)	print(grupe[i]);
-	delete[] grupe;
+	for ( auto &i:grupe)	print(i);
+	grupe.clear();
 }
 
 void pildymas(studentas& temp)
 {
+	int p;
 	cout << "Iveskite varda ir pavarde: ";
 	cin >> temp.vardas >> temp.pavarde;
 	if (atsitiktinai == 1)
 	{
 		srand(time(NULL));
-		temp.paz = new int[paz_sk];
 		for (int i = 0; i < paz_sk; i++)
 		{
-			temp.paz[i] = (rand() % 10) + 1;
+			temp.paz.push_back((rand() % 10) + 1) ;
 		}
 		temp.egz = (rand() % 10) + 1;
 	}
@@ -65,38 +58,32 @@ void pildymas(studentas& temp)
 	else
 	{
 		cout << "Iveskite " << paz_sk << " pazymius: ";
-		temp.paz = new int[paz_sk];
 		for (int i = 0; i < paz_sk; i++)
 		{
-			do
-			{
-				cin >> temp.paz[i];
-				if (temp.paz[i] <= 0 || temp.paz[i] > 10)
-				{
-					cout << "Iveskite skaiciu tarp 1 ir 10" << endl;
-				}
-			} while (temp.paz[i] <= 0 || temp.paz[i] > 10);
+			cin >> p;
+			temp.paz.push_back(p);
 		}
+
+		cin.clear();
 		cout << "Iveskite egzamino pazymi: ";
 		do
 		{
-		cin >> temp.egz;
-		if (temp.egz <= 0 || temp.egz > 10)
-		{
-			cout << "Iveskite skaiciu tarp 1 ir 10" << endl;
-		}
+			cin >> temp.egz;
+			if (temp.egz <= 0 || temp.egz > 10)
+			{
+				cout << "Iveskite skaiciu tarp 1 ir 10" << endl;
+			}
 		} while (temp.egz <= 0 || temp.egz > 10);
 	}
 }
-void print(studentas& temp)
+void print( studentas& temp)
 {
 	cout << setw(15) << temp.vardas << setw(20) << temp.pavarde;
 	cout << setw(20) << vid(temp) << setw(15) << mid(temp) << endl;
-	delete[] temp.paz;
 }
 
 
-double vid(studentas& temp)
+double vid( studentas& temp)
 {
 	double rezultatas = 0;
 	for (int i = 0; i < paz_sk; i++)
@@ -107,7 +94,7 @@ double vid(studentas& temp)
 	rezultatas = 0.4 * rezultatas + 0.6 * temp.egz;
 	return rezultatas;
 }
-double mid(studentas& temp)
+double mid( studentas& temp)
 {
 	double rezultatas = 0;
 	sort(&temp.paz[0], &temp.paz[0] + paz_sk);
