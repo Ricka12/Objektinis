@@ -1,2 +1,2 @@
 # V0.1
-program
+OP darbas
